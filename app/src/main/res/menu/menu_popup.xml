@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/themMoi"
+        android:title="Thêm mới"
+        />
+    <item
+        android:id="@+id/sapXepTangDan"
+        android:title="Sắp xếp tăng dần"
+        />
+    <item
+        android:id="@+id/sapXepGiamDan"
+        android:title="Sắp xếp giảm dần"
+        />
+</menu>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ShopApp"
+        tools:targetApi="31">
+        <activity
+            android:name=".UserActivities.XemSanPhamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivities.DangXuatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DangKyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DangNhapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivities.KhachHangActivity"
+            android:exported="false" />
+         <activity
+         android:name=".Activities.AdminActivity"
+         android:exported="false" />
+        <activity
+            android:name=".Activities.SuaSanPhamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.XemChiTietSanPhamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ThemSanPhamActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLySanPhamActivity"
+            android:exported="false" />
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAoUdixyaluxAEFwIcGv0h7fo0kGvvK4iY" />
+
+        <activity
+            android:name=".Activities.SuaNhaSanXuatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ThemNhaSX"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.QuanLyNSXActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

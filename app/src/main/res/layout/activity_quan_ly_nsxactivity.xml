@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.QuanLyNSXActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-31dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbQuanLyNSX"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#c92027"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Khu vực quản lý nhà sản xuất"
+            android:textColor="#F44336"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="672dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/lvNhaSanXuat"
+                android:layout_width="match_parent"
+                android:layout_height="680dp"
+                android:padding="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

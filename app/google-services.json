@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "563124716162",
+    "firebase_url": "https://shopapp-8cf03-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "shopapp-8cf03",
+    "storage_bucket": "shopapp-8cf03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563124716162:android:bcc63e45004189f8282a9b",
+        "android_client_info": {
+          "package_name": "com.example.shopapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoUdixyaluxAEFwIcGv0h7fo0kGvvK4iY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

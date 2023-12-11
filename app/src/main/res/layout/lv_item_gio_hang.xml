@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="10">
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/img_dai_dien"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_weight="7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_ten_sp"
+                android:text="Ten san pham"
+                android:textColor="#10100f"
+                android:textSize="25sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_huy"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="X"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_gia_sp"
+            android:layout_marginTop="3dp"
+            android:text="Gia san pham"
+            android:textSize="15sp"
+            android:textColor="#f20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_tru"
+                android:text="-"
+                android:layout_marginTop="5dp"
+                android:textSize="30sp"
+                android:layout_width="50dp"
+                android:focusable="false"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_gia_tri"
+                android:text="1"
+                android:layout_marginTop="5dp"
+                android:textSize="30sp"
+                android:layout_width="80dp"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                android:background="@null"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cong"
+                android:text="+"
+                android:layout_marginTop="5dp"
+                android:textSize="30sp"
+                android:layout_width="50dp"
+                android:focusable="false"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

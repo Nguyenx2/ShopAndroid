@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.GuiEmailNhaSanXuatActivity"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_gui_email"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#c92027"
+        app:title="Gửi Email cho nhà sản xuất"
+        app:titleTextColor="#fff"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+        <EditText
+            android:id="@+id/edt_email_nsx"
+            android:hint="Email nhà sản xuất..."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/edt_tieu_de"
+            android:hint="Tiêu đề..."
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+        <EditText
+            android:id="@+id/edt_noi_dung"
+            android:hint="Nội dung..."
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+        <Button
+            android:id="@+id/btn_gui_email"
+            android:backgroundTint="#4CAF50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gửi"
+            android:textSize="22sp"/>
+    </LinearLayout>
+</LinearLayout>

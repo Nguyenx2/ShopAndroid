@@ -1,13 +1,24 @@
 package com.example.shopapp.Fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -18,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.shopapp.Activities.QuanLySanPhamActivity;
+import com.example.shopapp.Activities.ThemSanPhamActivity;
 import com.example.shopapp.Adapters.SanPhamAdapter;
 import com.example.shopapp.Models.SanPham;
 import com.example.shopapp.R;
@@ -32,6 +45,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,10 +97,12 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
     }
 
     ArrayList<SanPham> listSanPham = new ArrayList<>();
     SanPhamAdapter sanPhamAdapter;
+    Toolbar tbTrangChu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +111,9 @@ public class HomeFragment extends Fragment {
 
         gvSanPham = view.findViewById(R.id.gv_san_pham);
         vfTrangChu = view.findViewById(R.id.vf_trang_chu);
+        tbTrangChu = view.findViewById(R.id.tb_trang_chu);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(tbTrangChu);
 
         in = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         out = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
@@ -149,4 +169,76 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu_qlsp, menu);
+        MenuItem menuSearch = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView) menuSearch.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                sanPhamAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                sanPhamAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menuControl){
+            showPopup();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showPopup(){
+        View view = requireActivity().findViewById(R.id.menuControl);
+        PopupMenu popupMenu = new PopupMenu(requireActivity(), view);
+        popupMenu.inflate(R.menu.menu_popup);
+        popupMenu.getMenu().findItem(R.id.themMoi).setVisible(false);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.sapXepGiamDan){
+                    sapXepGiamDan();
+                } else if (id == R.id.sapXepTangDan){
+                    sapXepTangDan();
+                }
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+    private void sapXepGiamDan() {
+        Collections.sort(listSanPham, new Comparator<SanPham>() {
+            @Override
+            public int compare(SanPham sp1, SanPham sp2) {
+                return Double.compare(sp2.getGiaSP(), sp1.getGiaSP());
+            }
+        });
+        sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.gv_san_pham, listSanPham);
+        gvSanPham.setAdapter(sanPhamAdapter);
+    }
+
+    private void sapXepTangDan() {
+        Collections.sort(listSanPham, new Comparator<SanPham>() {
+            @Override
+            public int compare(SanPham sp1, SanPham sp2) {
+                return Double.compare(sp1.getGiaSP(), sp2.getGiaSP());
+            }
+        });
+        sanPhamAdapter = new SanPhamAdapter(getActivity(), R.layout.gv_san_pham, listSanPham);
+        gvSanPham.setAdapter(sanPhamAdapter);
+    }
 }

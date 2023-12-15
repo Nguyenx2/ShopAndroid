@@ -1,5 +1,8 @@
 package com.example.shopapp.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +20,11 @@ import android.widget.Toast;
 import com.example.shopapp.Adapters.ItemGioHangAdapter;
 import com.example.shopapp.Models.GioHangItem;
 import com.example.shopapp.Models.HoaDon;
+import com.example.shopapp.Models.User;
 import com.example.shopapp.R;
 import com.example.shopapp.Utils.FirebaseUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -88,7 +95,6 @@ public class GioHangFragment extends Fragment {
 
     DatabaseReference gioHangRef = FirebaseUtils.getChildRef("GioHang");
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    float tongTien = 0;
     ArrayList<GioHangItem> listGioHangItem = new ArrayList<>();
 
     @Override
@@ -112,36 +118,6 @@ public class GioHangFragment extends Fragment {
         docDuLieu();
         datHang();
     }
-    private void datHang(){
-        btnDatHang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = hoaDonRef.push().getKey().toString();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                String thoiGian = sdf.format(new Date());
-                HoaDon hd = new HoaDon(id, user.getUid(), listGioHangItem, tongTien, thoiGian);
-                gioHangRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot data : snapshot.getChildren()){
-                            GioHangItem gioHangItem = data.getValue(GioHangItem.class);
-                            listGioHangItem.add(gioHangItem);
-                        }
-                        hoaDonRef.child(id)
-                                .setValue(hd);
-                        Toast.makeText(getContext(), "Them hoa don thanh cong !", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-            }
-        });
-    }
     private void docDuLieu(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
@@ -151,6 +127,7 @@ public class GioHangFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 gioHangItems.clear();
+                float tongTien = 0;
                 for (DataSnapshot data : snapshot.getChildren()) {
                     GioHangItem gioHangItem = data.getValue(GioHangItem.class);
                     if (gioHangItem != null) {
@@ -167,6 +144,43 @@ public class GioHangFragment extends Fragment {
                 tvTongTien.setText(decimalFormat.format(tongTien) + " VNĐ");
                 itemGioHangAdapter.notifyDataSetChanged();
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void datHang(){
+        btnDatHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hienThiXacNhanTT();
+            }
+        });
+    }
+    private void hienThiXacNhanTT(){
+        // Thong tin hoa don
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_user_info, null);
+        builder.setView(dialogView);
+        EditText edtTen = dialogView.findViewById(R.id.edt_ten);
+        EditText edtSDT = dialogView.findViewById(R.id.edt_sdt);
+        EditText edtEmail = dialogView.findViewById(R.id.edt_email);
+        EditText edtDiaChi = dialogView.findViewById(R.id.edt_dia_chi);
+
+        DatabaseReference userRef = FirebaseUtils.getChildRef("User");
+        userRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    User user1 =snapshot.getValue(User.class);
+                    edtTen.setText(user1.getTen());
+                    edtSDT.setText(user1.getSoDienThoai());
+                    edtEmail.setText(user1.getEmail());
+                    edtDiaChi.setText(user1.getDiaChi());
+                }
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -174,7 +188,68 @@ public class GioHangFragment extends Fragment {
             }
         });
 
+        builder.setTitle("Xác nhận thông tin giao hàng: ");
+        builder.setPositiveButton("Đóng", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton("Xác nhận", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int j) {
+                String id = hoaDonRef.push().getKey().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                String thoiGian = sdf.format(new Date());
+                String hoTen = edtTen.getText().toString().trim();
+                String email = edtEmail.getText().toString().trim();
+                String sdt = edtSDT.getText().toString().trim();
+                String diaChi = edtDiaChi.getText().toString().trim();
+                float tongTien = 0;
+                for (int i = 0; i < gioHangItems.size(); i++){
+                    tongTien += gioHangItems.get(i).getGiaSP() * gioHangItems.get(i).getSoLuong();
+                }
+                if (hoTen.length() > 0 && email.length() > 0 && sdt.length() > 0&& diaChi.length() >0){
+                    HoaDon hd = new HoaDon(id, user.getUid(), hoTen, email,
+                            sdt, diaChi, listGioHangItem, tongTien, thoiGian);
+                    gioHangRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot data : snapshot.getChildren()){
+                                GioHangItem gioHangItem = data.getValue(GioHangItem.class);
+                                listGioHangItem.add(gioHangItem);
+                            }
+                            hoaDonRef.child(id).setValue(hd).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        gioHangRef.child(user.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getActivity(), "Thêm hóa đơn thành công !", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(getActivity(), "Lỗi xử lý !", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                            Toast.makeText(getActivity().getBaseContext(), "Them hoa don thanh cong !", Toast.LENGTH_SHORT).show();
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(), "Vui lòng điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

@@ -17,6 +17,18 @@
         android:theme="@style/Theme.ShopApp"
         tools:targetApi="31">
         <activity
+            android:name=".QuenMatKhauActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.GuiEmailNhaSanXuatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivities.XemChiTietHoaDon"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivities.DanhGiaActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserActivities.XemSanPhamActivity"
             android:exported="false" />
         <activity
@@ -24,16 +36,15 @@
             android:exported="false" />
         <activity
             android:name=".DangKyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DangNhapActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".DangNhapActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".UserActivities.KhachHangActivity"
             android:exported="false" />
-         <activity
-         android:name=".Activities.AdminActivity"
-         android:exported="false" />
+        <activity
+            android:name=".Activities.AdminActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.SuaSanPhamActivity"
             android:exported="false" />
@@ -71,7 +82,7 @@
             android:name=".Activities.QuanLyNSXActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".DangNhapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

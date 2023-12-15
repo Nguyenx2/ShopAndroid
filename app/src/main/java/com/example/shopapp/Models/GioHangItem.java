@@ -1,19 +1,23 @@
 package com.example.shopapp.Models;
 
-public class GioHangItem {
+import java.io.Serializable;
+
+public class GioHangItem implements Serializable {
     private String id;
     private String tenSP;
     private float giaSP;
     private String anhDaiDien;
     private int soLuong;
+    private String tenNhaSX;
     public GioHangItem(){};
 
-    public GioHangItem(String id, String tenSP, float giaSP, String anhDaiDien, int soLuong) {
+    public GioHangItem(String id, String tenSP, float giaSP, String anhDaiDien, int soLuong, String tenNhaSX) {
         this.id = id;
         this.tenSP = tenSP;
         this.giaSP = giaSP;
         this.anhDaiDien = anhDaiDien;
         this.soLuong = soLuong;
+        this.tenNhaSX = tenNhaSX;
     }
 
     public String getId() {
@@ -54,5 +58,13 @@ public class GioHangItem {
 
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
+    }
+
+    public String getTenNhaSX() {
+        return tenNhaSX;
+    }
+
+    public void setTenNhaSX(String tenNhaSX) {
+        this.tenNhaSX = tenNhaSX;
     }
 }

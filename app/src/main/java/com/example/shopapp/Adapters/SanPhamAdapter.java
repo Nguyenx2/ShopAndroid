@@ -26,6 +26,7 @@ import com.example.shopapp.Activities.QuanLySanPhamActivity;
 import com.example.shopapp.Activities.SuaNhaSanXuatActivity;
 import com.example.shopapp.Activities.SuaSanPhamActivity;
 import com.example.shopapp.Activities.XemChiTietSanPhamActivity;
+import com.example.shopapp.Models.NhaSanXuat;
 import com.example.shopapp.Models.SanPham;
 import com.example.shopapp.R;
 import com.example.shopapp.Utils.FirebaseUtils;
@@ -44,13 +45,13 @@ import java.util.List;
 public class SanPhamAdapter extends ArrayAdapter {
     Activity context;
     int resource;
-    public ArrayList<SanPham> listSanPham;
+    public ArrayList<SanPham> listSanPham, listSanPhamFilter, listSanPhamBackup;
 
     public SanPhamAdapter(@NonNull Activity context, int resource, ArrayList<SanPham> listSanPham) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
-        this.listSanPham = listSanPham;
+        this.listSanPham = this.listSanPhamBackup = listSanPham;
     }
 
     @Override
@@ -147,5 +148,36 @@ public class SanPhamAdapter extends ArrayAdapter {
             });
         }
         return view;
+    }
+
+    @NonNull
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                FilterResults filterResult = new FilterResults();
+                String query = charSequence.toString().trim().toLowerCase();
+                if (query.length() < 1) {
+                    listSanPhamFilter = listSanPhamBackup;
+                } else {
+                    listSanPhamFilter = new ArrayList<>();
+                    for (SanPham sp : listSanPhamBackup) {
+                        if (sp.getTenNhaSX().toLowerCase().contains(query)
+                                || sp.getTenSP().toLowerCase().contains(query)) {
+                            listSanPhamFilter.add(sp);
+                        }
+                    }
+                }
+                filterResult.values = listSanPhamFilter;
+                return filterResult;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                listSanPham = (ArrayList<SanPham>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

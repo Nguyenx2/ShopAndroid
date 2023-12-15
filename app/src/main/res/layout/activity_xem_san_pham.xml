@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".UserActivities.XemSanPhamActivity"
     android:orientation="vertical">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_san_pham"
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:background="#c92027"
         app:title="Chi tiết sản phẩm"
         app:titleTextColor="#F8F8F8"/>
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -74,6 +75,24 @@
                 android:textSize="16sp"
                 android:text="Nhà sản xuất"
                 android:layout_margin="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_danh_gia_tb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Đánh giá: "
+                    android:layout_margin="5dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/baseline_star_rate_24"/>
+            </LinearLayout>
+
             <Spinner
                 android:padding="15dp"
                 android:textAlignment="center"
@@ -106,19 +125,43 @@
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
                 android:text="Mo ta"/>
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bình luận"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"/>
-            <ListView
-                android:id="@+id/lv_binh_luan"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bình luận"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_so_binh_luan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:text="Số bình luận"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="300dp">
+                <TextView
+                    android:id="@+id/tv_thong_bao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textColor="#9C9B9A"
+                    android:layout_gravity="center"
+                    android:text="Không có bình luận nào"/>
+                <ListView
+                    android:id="@+id/lv_binh_luan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"/>
+            </FrameLayout>
         </LinearLayout>
-    </ScrollView>
-
-
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

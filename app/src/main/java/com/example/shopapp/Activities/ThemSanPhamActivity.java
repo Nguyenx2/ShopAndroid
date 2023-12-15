@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
     String nhaSanXuatId = null;
     DatabaseReference nhaSanXuatRef = FirebaseUtils.getChildRef("NhaSanXuat");
     DatabaseReference sanPhamRef = FirebaseUtils.getChildRef("SanPham");
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,8 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         btnQuayLai = findViewById(R.id.btnQuayLai);
         spinnerNhaSX = findViewById(R.id.spinnerNhaSX);
 
-        
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         addEvents();
         
     }
@@ -168,10 +171,14 @@ public class ThemSanPhamActivity extends AppCompatActivity {
             }
         });
 
+        themMoi();
+    }
 
+    private void themMoi(){
         btnThemMoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 String tenSP = edtTenSP.getText().toString().trim();
                 float giaSP = Float.parseFloat(edtGiaSP.getText().toString().trim());
                 String moTaSP = edtMoTaSP.getText().toString().trim();
@@ -211,6 +218,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                                                         Toast.makeText(ThemSanPhamActivity.this,
                                                                 "Lỗi khi thêm sản phẩm mới: " + task.getException(), Toast.LENGTH_SHORT).show();
                                                     }
+                                                    progressBar.setVisibility(View.INVISIBLE);
                                                 }
                                             });
                                         }
@@ -219,14 +227,15 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         System.out.println("Tải ảnh lên bị lỗi: " + e.toString());
+                                        progressBar.setVisibility(View.INVISIBLE);
                                     }
                                 });
                             }
                         });
                     }
                 }
+
             }
         } );
     }
-
 }

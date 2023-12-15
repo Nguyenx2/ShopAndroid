@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class SuaSanPhamActivity extends AppCompatActivity {
     String nhaSanXuatId = null;
     DatabaseReference nhaSanXuatRef = FirebaseUtils.getChildRef("NhaSanXuat");
     DatabaseReference sanPhamRef = FirebaseUtils.getChildRef("SanPham");
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,9 @@ public class SuaSanPhamActivity extends AppCompatActivity {
         spinnerNhaSX = findViewById(R.id.spinnerNhaSX);
         btnLuu = findViewById(R.id.btnLuu);
         btnQuayLai = findViewById(R.id.btnQuayLai);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         addEvents();
 
@@ -182,10 +187,10 @@ public class SuaSanPhamActivity extends AppCompatActivity {
             }
         });
 
-        // Luu anh
         btnLuu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 String tenSP = edtTenSP.getText().toString().trim();
                 float giaSP = Float.parseFloat(edtGiaSP.getText().toString().trim());
                 String moTaSP = edtMoTaSP.getText().toString().trim();
@@ -224,6 +229,7 @@ public class SuaSanPhamActivity extends AppCompatActivity {
                                                         Toast.makeText(SuaSanPhamActivity.this,
                                                                 "Lỗi khi thêm sản phẩm mới: " + task.getException(), Toast.LENGTH_SHORT).show();
                                                     }
+                                                    progressBar.setVisibility(View.INVISIBLE);
                                                 }
                                             });
                                         }
@@ -232,6 +238,7 @@ public class SuaSanPhamActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         System.out.println("Tải ảnh lên bị lỗi: " + e.toString());
+                                        progressBar.setVisibility(View.INVISIBLE);
                                     }
                                 });
                             }

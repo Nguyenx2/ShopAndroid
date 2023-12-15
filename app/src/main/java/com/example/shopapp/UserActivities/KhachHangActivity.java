@@ -11,13 +11,11 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.shopapp.Fragments.CaNhanFragment;
-import com.example.shopapp.Fragments.DaMuaFragment;
 import com.example.shopapp.Fragments.GioHangFragment;
 import com.example.shopapp.Fragments.HoaDonFragment;
 import com.example.shopapp.Fragments.HomeFragment;
 import com.example.shopapp.R;
 import com.example.shopapp.Utils.FirebaseUtils;
-import com.example.shopapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 public class KhachHangActivity extends AppCompatActivity {
-    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-    DatabaseReference userRef = FirebaseUtils.getChildRef("User");
-    ActivityMainBinding binding;
     FrameLayout frameLayout;
     BottomNavigationView bottomNav;
     @Override
@@ -62,12 +57,10 @@ public class KhachHangActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.home) {
                     rFragment(new HomeFragment());
-                } else if (itemId == R.id.hoa_don) {
-                    rFragment(new HoaDonFragment());
                 } else if (itemId == R.id.gio_hang) {
                     rFragment(new GioHangFragment());
                 } else if (itemId == R.id.da_mua) {
-                    rFragment(new DaMuaFragment());
+                    rFragment(new HoaDonFragment());
                 } else if (itemId == R.id.ca_nhan) {
                     rFragment(new CaNhanFragment());
                 }

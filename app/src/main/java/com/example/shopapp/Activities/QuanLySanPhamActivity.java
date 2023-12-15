@@ -79,7 +79,22 @@ public class QuanLySanPhamActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu_qlsp, menu);
+        MenuItem menuSearch = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView) menuSearch.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                sanPhamAdapter.getFilter().filter(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                sanPhamAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 

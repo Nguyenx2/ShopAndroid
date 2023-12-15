@@ -152,9 +152,11 @@ public class QuanLyNSXActivity extends AppCompatActivity {
                 startActivity(goiDienThoaiIntent);
                 break;
             case 1:
-                Uri emailURI = Uri.parse("mailto:" + nhaSanXuat.getEmail());
-                Intent guiEmailIntent = new Intent(Intent.ACTION_SENDTO, emailURI);
-                startActivity(Intent.createChooser(guiEmailIntent, "Chọn ứng dụng email"));
+                Intent intent = new Intent(QuanLyNSXActivity.this, GuiEmailNhaSanXuatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("email", nhaSanXuat.getEmail());
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case 2:
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + nhaSanXuat.getDiaChi());
@@ -169,10 +171,11 @@ public class QuanLyNSXActivity extends AppCompatActivity {
                 break;
             case 3:
                 Intent suaNhaSanXuatIntent = new Intent(getBaseContext(), SuaNhaSanXuatActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("id", nhaSanXuat.getId());
-                suaNhaSanXuatIntent.putExtras(bundle);
+                Bundle bundle3 = new Bundle();
+                bundle3.putString("id", nhaSanXuat.getId());
+                suaNhaSanXuatIntent.putExtras(bundle3);
                 startActivity(suaNhaSanXuatIntent);
+                break;
             case 4:
                 String thongDiep = "Bạn thực sự muốn xóa: " + nhaSanXuat.getTenNhaSX() + " ?";
                 AlertDialog.Builder builder = new AlertDialog.Builder(QuanLyNSXActivity.this);
@@ -197,7 +200,7 @@ public class QuanLyNSXActivity extends AppCompatActivity {
                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+                        dialogInterface.dismiss();
                     }
                 });
                 builder.create().show();

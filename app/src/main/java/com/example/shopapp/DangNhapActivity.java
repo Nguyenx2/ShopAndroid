@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shopapp.Activities.AdminActivity;
+import com.example.shopapp.Activities.QuanLySanPhamActivity;
 import com.example.shopapp.UserActivities.KhachHangActivity;
 import com.example.shopapp.Utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DangNhapActivity extends AppCompatActivity {
     LinearLayout layoutDangKy;
+    TextView tvQuenMatKhau;
     EditText edtEmail, edtPassword;
     Button btnDangNhap;
     DatabaseReference userRef = FirebaseUtils.getChildRef("User");
@@ -42,8 +45,10 @@ public class DangNhapActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnDangNhap = findViewById(R.id.btn_dang_nhap);
+        tvQuenMatKhau = findViewById(R.id.tv_quen_mat_khau);
     }
     private void initListener() {
+        quenMatKhau();
         layoutDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,18 +62,22 @@ public class DangNhapActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = edtEmail.getText().toString().trim();
                 String password = edtPassword.getText().toString().trim();
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()){
-                                    kiemTraRole();
-                                } else {
-                                    Toast.makeText(DangNhapActivity.this,
-                                            "Đăng nhập thất bại !", Toast.LENGTH_SHORT).show();
+                if (email.length() > 0 && password.length() > 0){
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()){
+                                        kiemTraRole();
+                                    } else {
+                                        Toast.makeText(DangNhapActivity.this,
+                                                "Đăng nhập thất bại !", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                } else {
+                    Toast.makeText(DangNhapActivity.this, "Vui lòng điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -94,12 +103,22 @@ public class DangNhapActivity extends AppCompatActivity {
                     intent = new Intent(getBaseContext(), KhachHangActivity.class);
                 }
                 startActivity(intent);
+                finish();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(DangNhapActivity.this,
                         "Có lỗi: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void quenMatKhau(){
+        tvQuenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DangNhapActivity.this, QuenMatKhauActivity.class);
+                startActivity(intent);
             }
         });
     }

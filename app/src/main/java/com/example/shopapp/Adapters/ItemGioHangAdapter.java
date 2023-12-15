@@ -53,10 +53,10 @@ public class ItemGioHangAdapter extends ArrayAdapter {
         LayoutInflater inflater = this.context.getLayoutInflater();
         View view = inflater.inflate(this.resource, null);
 
-
         ImageView imgDaiDien = view.findViewById(R.id.img_dai_dien);
         TextView tvTenSP = view.findViewById(R.id.tv_ten_sp);
         TextView tvGiaSP = view.findViewById(R.id.tv_gia_sp);
+        TextView tvTenNhaSX = view.findViewById(R.id.tv_ten_nha_sx);
         Button btnTru = view.findViewById(R.id.btn_tru);
         Button btnCong = view.findViewById(R.id.btn_cong);
         Button btnHuy = view.findViewById(R.id.btn_huy);
@@ -72,6 +72,7 @@ public class ItemGioHangAdapter extends ArrayAdapter {
         tvGiaSP.setText("Giá: " + decimalFormat.format(item.getGiaSP()) + " VNĐ");
         Glide.with(getContext()).load(item.getAnhDaiDien()).into(imgDaiDien);
         btnGiaTri.setText(String.valueOf(item.getSoLuong()));
+        tvTenNhaSX.setText("Nhà sản xuất: " + item.getTenNhaSX());
 
         if (item.getSoLuong() == 1) {
             btnTru.setVisibility(View.INVISIBLE);
@@ -82,7 +83,7 @@ public class ItemGioHangAdapter extends ArrayAdapter {
             int soLuong = item.getSoLuong();
             @Override
             public void onClick(View view) {
-                soLuong++;
+                soLuong += 1;
                 btnGiaTri.setText(String.valueOf(soLuong));
                 itemRef.child("soLuong").setValue(soLuong);
             }
@@ -96,7 +97,7 @@ public class ItemGioHangAdapter extends ArrayAdapter {
                 if (soLuong == 1){
                     btnTru.setVisibility(View.INVISIBLE);
                 } else {
-                    soLuong--;
+                    soLuong -= 1;
                     btnTru.setVisibility(View.VISIBLE);
                 }
                 btnGiaTri.setText(String.valueOf(soLuong));

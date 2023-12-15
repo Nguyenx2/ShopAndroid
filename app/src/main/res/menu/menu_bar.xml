@@ -9,12 +9,6 @@
         android:icon="@drawable/home"
         tools:ignore="MenuTitle"/>
     <item
-        android:id="@+id/hoa_don"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:icon="@drawable/dashboard"
-        tools:ignore="MenuTitle" />
-    <item
         android:id="@+id/gio_hang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -58,7 +58,6 @@ public class SuaNhaSanXuatActivity extends AppCompatActivity {
         btnSua = findViewById(R.id.btnSua);
         btnQuayLai = findViewById(R.id.btnQuayLai);
         addEvents();
-
     }
 
     private void addEvents() {

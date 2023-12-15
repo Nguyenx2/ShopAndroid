@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shopapp.Models.NhaSanXuat;
@@ -33,7 +34,7 @@ public class ThemNhaSX extends AppCompatActivity {
     ImageView imgNhaSanXuat;
     EditText edtTenNhaSX, edtEmail, edtSDT, edtDiaChi;
     Button btnThemMoi, btnQuayLai, btnChonAnh;
-
+    ProgressBar progressBar;
     DatabaseReference nhaSanXuatRef = FirebaseUtils.getChildRef("NhaSanXuat");
     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     StorageReference storageReference = firebaseStorage.getReference();
@@ -70,6 +71,7 @@ public class ThemNhaSX extends AppCompatActivity {
         btnThemMoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 String tenNhaSX = edtTenNhaSX.getText().toString().trim();
                 String email = edtEmail.getText().toString().trim();
                 String soDienThoai = edtSDT.getText().toString().trim();
@@ -107,6 +109,7 @@ public class ThemNhaSX extends AppCompatActivity {
                                                         Toast.makeText(ThemNhaSX.this,
                                                                 "Lỗi thêm nhà sản xuất " + task.getException(), Toast.LENGTH_SHORT).show();
                                                     }
+                                                    progressBar.setVisibility(View.INVISIBLE);
                                                 }
                                             });
                                         }
@@ -134,5 +137,7 @@ public class ThemNhaSX extends AppCompatActivity {
         btnChonAnh = findViewById(R.id.btnChonAnh);
         btnThemMoi = findViewById(R.id.btnThemMoi);
         btnQuayLai = findViewById(R.id.btnQuayLai);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }

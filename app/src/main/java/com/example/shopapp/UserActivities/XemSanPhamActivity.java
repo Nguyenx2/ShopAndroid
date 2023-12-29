@@ -3,18 +3,25 @@ package com.example.shopapp.UserActivities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -67,6 +74,10 @@ public class XemSanPhamActivity extends AppCompatActivity {
     BinhLuanAdapter binhLuanAdapter;
     ArrayList<BinhLuan> listBinhLuan = new ArrayList<>();
     ArrayList<Long> listDiemDanhGia = new ArrayList<>();
+    List<ImageView> imageViews = new ArrayList<>();
+    List<String> imageUrls = new ArrayList<>();
+    ImageView dialogImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +122,12 @@ public class XemSanPhamActivity extends AppCompatActivity {
             ImageView imageView = new ImageView(getBaseContext());
             Glide.with(getBaseContext()).load(sp.getThumbnails().get(i)).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageViews.add(imageView);
+            // Lưu địa chỉ URL vào danh sách
+            imageUrls.add(sp.getThumbnails().get(i));
+        }
+
+        for (ImageView imageView : imageViews){
             vfSanPham.addView(imageView);
         }
 
@@ -228,7 +245,77 @@ public class XemSanPhamActivity extends AppCompatActivity {
     }
     private void initListener(){
         themVaoGioHang();
+        openGallery();
     }
+    private void openGallery(){
+        vfSanPham.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showGallery();
+            }
+        });
+    }
+    private void showGallery(){
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.gallery_layout);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+
+        dialogImageView = dialog.findViewById(R.id.imageView);
+        ImageButton btnPrev = dialog.findViewById(R.id.buttonPrevious);
+        ImageButton btnNext = dialog.findViewById(R.id.buttonNext);
+        ImageButton btnClose = dialog.findViewById(R.id.buttonClose);
+
+        String imageUrl = getCurrentImageUrl();
+
+        Glide.with(this).load(imageUrl).into(dialogImageView);
+
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPreviousImage();
+            }
+        });
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showNextImage();
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    private String getCurrentImageUrl(){
+        int currentImageIndex = vfSanPham.getDisplayedChild();
+        if (currentImageIndex >= 0 && currentImageIndex < imageUrls.size()) {
+            return imageUrls.get(currentImageIndex);
+        } else {
+            return "";
+        }
+    }
+
+    private void showPreviousImage() {
+        vfSanPham.showPrevious();
+        updateDialogImage();
+    }
+
+    private void showNextImage() {
+        vfSanPham.showNext();
+        updateDialogImage();
+    }
+    private void updateDialogImage(){
+        String imageUrl = getCurrentImageUrl();
+        Glide.with(this).load(imageUrl).into(dialogImageView);
+    }
+
     private void themVaoGioHang(){
         btnThemGioHang.setOnClickListener(new View.OnClickListener() {
             @Override

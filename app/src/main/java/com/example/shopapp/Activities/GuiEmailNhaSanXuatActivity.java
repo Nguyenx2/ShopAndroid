@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shopapp.R;
+import com.example.shopapp.Utils.SendEmailUtils;
 
 import java.util.Properties;
 
@@ -28,6 +31,8 @@ public class GuiEmailNhaSanXuatActivity extends AppCompatActivity {
     EditText edtEmailNSX, edtTieuDe, edtNoiDung;
     Button btnGuiEmail;
     String email;
+    ProgressBar progressBar;
+    LinearLayout layoutScreen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,9 @@ public class GuiEmailNhaSanXuatActivity extends AppCompatActivity {
         edtTieuDe = findViewById(R.id.edt_tieu_de);
         edtNoiDung = findViewById(R.id.edt_noi_dung);
         btnGuiEmail = findViewById(R.id.btn_gui_email);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+        layoutScreen = findViewById(R.id.layout_screen);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -61,57 +69,52 @@ public class GuiEmailNhaSanXuatActivity extends AppCompatActivity {
         });
     }
     private void initListener(){
-        guiEmai();
-    }
-    private void guiEmai(){
         btnGuiEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    String fromEmail = "shopapp.work@gmail.com";
-                    String emailPassword = "gqatxjroykiz onwr";
-                    String toEmail = edtEmailNSX.getText().toString().trim();
-                    String tieuDe = edtTieuDe.getText().toString().trim();
-                    String noiDung = edtNoiDung.getText().toString().trim();
-                    String host = "smtp.gmail.com";
-                    Properties properties = System.getProperties();
-                    properties.put("mail.smtp.host", host);
-                    properties.put("mail.smtp.port", "465");
-                    properties.put("mail.smtp.ssl.enable", "true");
-                    properties.put("mail.smtp.auth", "true");
-                    Session session = Session.getInstance(properties, new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(fromEmail, emailPassword);
-                        }
-                    });
-                    MimeMessage mimeMessage = new MimeMessage(session);
-                    mimeMessage.addRecipient(Message.RecipientType.TO,
-                            new InternetAddress(toEmail));
-                    mimeMessage.setSubject(tieuDe);
-                    mimeMessage.setText(noiDung);
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Transport.send(mimeMessage);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    thread.start();
-                    edtEmailNSX.setText(email);
-                    edtTieuDe.setText("");
-                    edtNoiDung.setText("");
-                    Toast.makeText(GuiEmailNhaSanXuatActivity.this,
-                            "Email đã được gửi tới " + toEmail, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(GuiEmailNhaSanXuatActivity.this,
-                            "Có lỗi xảy ra ...", Toast.LENGTH_SHORT).show();
-                }
+                guiEmail();
+                progressBar.setVisibility(View.VISIBLE);
+                layoutScreen.setVisibility(View.INVISIBLE);
             }
         });
+    }
+    private void guiEmail(){
+        String toEmail = edtEmailNSX.getText().toString().trim();
+        String tieuDe = edtTieuDe.getText().toString().trim();
+        String noiDung = edtNoiDung.getText().toString().trim();
+        if (toEmail.length() > 0 && tieuDe.length() > 0 && noiDung.length() > 0){
+            SendEmailUtils.guiEmail(toEmail, tieuDe, noiDung, new SendEmailUtils.OnEmailSentListener() {
+                @Override
+                public void sentSuccess() {
+                    edtTieuDe.setText("");
+                    edtNoiDung.setText("");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            layoutScreen.setVisibility(View.VISIBLE);
+                            Toast.makeText(GuiEmailNhaSanXuatActivity.this,
+                                    "Gửi thành công !", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void sentError() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            layoutScreen.setVisibility(View.VISIBLE);
+                            Toast.makeText(GuiEmailNhaSanXuatActivity.this,
+                                    "Gặp lỗi trong khi gửi !", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        } else {
+            Toast.makeText(this, "Vui lòng không để trống thông tin !", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

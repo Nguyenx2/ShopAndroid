@@ -136,6 +136,7 @@ public class GioHangFragment extends Fragment {
                 }
                 if (gioHangItems.size() > 0){
                     tvThongBao.setVisibility(View.INVISIBLE);
+                    btnDatHang.setVisibility(View.VISIBLE);
                 }
                 for (int i = 0; i < gioHangItems.size(); i++){
                     tongTien += gioHangItems.get(i).getGiaSP() * gioHangItems.get(i).getSoLuong();
@@ -154,7 +155,11 @@ public class GioHangFragment extends Fragment {
         btnDatHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hienThiXacNhanTT();
+                if (gioHangItems.size() > 0){
+                    hienThiXacNhanTT();
+                } else {
+                    Toast.makeText(getActivity().getBaseContext(), "Vui lòng thêm sản phẩm dể đặt hàng !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

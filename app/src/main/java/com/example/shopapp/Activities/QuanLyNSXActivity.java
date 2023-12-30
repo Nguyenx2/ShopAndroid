@@ -112,7 +112,6 @@ public class QuanLyNSXActivity extends AppCompatActivity {
                     if (nhaSanXuat != null) {
                         listNhaSanXuat.add(nhaSanXuat);
                     }
-                    System.out.println("Value: " + data.getValue().toString());
                 }
                 nhaSanXuatAdapter.notifyDataSetChanged();
             }

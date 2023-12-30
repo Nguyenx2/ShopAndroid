@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.QuanLyTaiKhoanActivity"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_quan_ly_tai_khoan"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#c92027"
+        app:title="Quản lý tài khoản"
+        app:titleTextColor="#fff"/>
+    <ListView
+        android:id="@+id/lv_tai_khoan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

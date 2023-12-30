@@ -20,7 +20,7 @@ public class AdminActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
 
-    Button btnQuanLyNSX, btnQuanLySP, btnDangXuat;
+    Button btnQuanLyNSX, btnQuanLySP, btnDangXuat, btnQuanLyTaiKhoan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +46,13 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
+        btnQuanLyTaiKhoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), QuanLyTaiKhoanActivity.class);
+                startActivity(intent);
+            }
+        });
         btnDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +68,7 @@ public class AdminActivity extends AppCompatActivity {
         btnQuanLyNSX = findViewById(R.id.btnQuanLyNSX);
         btnQuanLySP = findViewById(R.id.btnQuanLySP);
         btnDangXuat = findViewById(R.id.btn_dang_xuat);
+        btnQuanLyTaiKhoan = findViewById(R.id.btnQuanLyTaiKhoan);
     }
 
 }

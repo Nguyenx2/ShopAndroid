@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +128,19 @@ public class SanPhamAdapter extends ArrayAdapter {
                             StorageReference anhSanPhamRef = FirebaseUtils.getChildStorageRef("AnhSanPham");
                             for (int j = 0; j < sp.getThumbnails().size(); j++) {
                                 String fileName = j + 1 + ".jpg";
-                                anhSanPhamRef.child(sp.getId()).child(fileName);
+                                StorageReference imageRef = anhSanPhamRef.child(sp.getId()).child(fileName);
+                                imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("TAG", "Xóa thành công !");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("TAG", "Gặp lỗi: " + e.getMessage());
+                                    }
+                                });
+
                             }
                             listSanPham.remove(position);
                             notifyDataSetChanged();

@@ -35,6 +35,7 @@
             android:id="@+id/edt_sdt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="phone"
             android:hint="Nhập số điện thoại ..."
             android:layout_marginTop="3dp"/>
     </LinearLayout>
@@ -52,6 +53,7 @@
             android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:hint="Nhập email ..."
             android:layout_marginTop="3dp"/>
     </LinearLayout>
@@ -74,7 +76,12 @@
             android:gravity="start|top"
             android:hint="Nhập địa chỉ ..."
             android:inputType="textMultiLine" />
-
     </LinearLayout>
+    <TextView
+        android:text="* Vui lòng nhập đúng Email để nhận hóa đơn đặt hàng !"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#f40"/>
 
 </LinearLayout>

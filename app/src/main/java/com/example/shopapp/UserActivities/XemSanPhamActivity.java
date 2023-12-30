@@ -59,7 +59,7 @@ import java.util.Date;
 import java.util.List;
 
 public class XemSanPhamActivity extends AppCompatActivity {
-    TextView tvTenSP, tvGiaSP, tvMoTaSP, tvNhaSX, tvDanhGiaTB, tvSoBinhLuan, tvThongBao;
+    TextView tvTenSP, tvGiaSP, tvMoTaSP, tvNhaSX, tvDanhGiaTB, tvSoBinhLuan, tvThongBao, tvSoLuongSP;
     Button btnThemGioHang;
     Spinner spinnerSanPham;
     ViewFlipper vfSanPham;
@@ -77,6 +77,7 @@ public class XemSanPhamActivity extends AppCompatActivity {
     List<ImageView> imageViews = new ArrayList<>();
     List<String> imageUrls = new ArrayList<>();
     ImageView dialogImageView;
+    int soLuongSP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class XemSanPhamActivity extends AppCompatActivity {
         tvGiaSP = findViewById(R.id.tv_gia_sp);
         tvMoTaSP = findViewById(R.id.tv_mo_ta_sp);
         tvNhaSX = findViewById(R.id.tv_nha_san_xuat);
+        tvSoLuongSP = findViewById(R.id.tv_so_luong_sp);
         tvDanhGiaTB = findViewById(R.id.tv_danh_gia_tb);
         tvSoBinhLuan = findViewById(R.id.tv_so_binh_luan);
         tvThongBao = findViewById(R.id.tv_thong_bao);
@@ -113,6 +115,15 @@ public class XemSanPhamActivity extends AppCompatActivity {
         tvGiaSP.setText("Giá: " + decimalFormat.format(sp.getGiaSP()) + " VNĐ");
         tvMoTaSP.setText(sp.getMoTaSP());
         tvNhaSX.setText("Nhà sản xuất: " + sp.getTenNhaSX());
+        tvSoLuongSP.setText("Số lượng: " + sp.getSoLuong());
+        soLuongSP = sp.getSoLuong();
+        if (soLuongSP == 0) {
+            btnThemGioHang.setText("Hết hàng");
+            btnThemGioHang.setEnabled(false);
+        } else {
+            btnThemGioHang.setEnabled(true);
+            btnThemGioHang.setText("Thêm vào giỏ hàng");
+        }
 
         catchEventSpinner();
         actionToolbar();
@@ -320,39 +331,43 @@ public class XemSanPhamActivity extends AppCompatActivity {
         btnThemGioHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int soLuong = Integer.parseInt(spinnerSanPham.getSelectedItem().toString());
+                int soLuongThem = Integer.parseInt(spinnerSanPham.getSelectedItem().toString());
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference gioHangUserRef = gioHangRef.child(user.getUid());
-
-                gioHangUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            if (snapshot.hasChild(sp.getId())) {
-                                GioHangItem tonTaiItem = snapshot.child(sp.getId()).getValue(GioHangItem.class);
-                                int newSoLuong = tonTaiItem.getSoLuong() + soLuong;
-                                tonTaiItem.setSoLuong(newSoLuong);
-                                gioHangUserRef.child(sp.getId()).setValue(tonTaiItem);
+                if (soLuongThem <= soLuongSP ){
+                    gioHangUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                if (snapshot.hasChild(sp.getId())) {
+                                    GioHangItem tonTaiItem = snapshot.child(sp.getId()).getValue(GioHangItem.class);
+                                    int newSoLuong = tonTaiItem.getSoLuong() + soLuongThem;
+                                    tonTaiItem.setSoLuong(newSoLuong);
+                                    gioHangUserRef.child(sp.getId()).setValue(tonTaiItem);
+                                } else {
+                                    GioHangItem newItem = new GioHangItem(sp.getId(), sp.getTenSP(), sp.getGiaSP(),
+                                            sp.getThumbnails().get(0), soLuongThem, sp.getTenNhaSX());
+                                    gioHangUserRef.child(sp.getId()).setValue(newItem);
+                                }
                             } else {
                                 GioHangItem newItem = new GioHangItem(sp.getId(), sp.getTenSP(), sp.getGiaSP(),
-                                        sp.getThumbnails().get(0), soLuong, sp.getTenNhaSX());
+                                        sp.getThumbnails().get(0), soLuongThem, sp.getTenNhaSX());
                                 gioHangUserRef.child(sp.getId()).setValue(newItem);
                             }
-                        } else {
-                            GioHangItem newItem = new GioHangItem(sp.getId(), sp.getTenSP(), sp.getGiaSP(),
-                                    sp.getThumbnails().get(0), soLuong, sp.getTenNhaSX());
-                            gioHangUserRef.child(sp.getId()).setValue(newItem);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-                Intent intent = new Intent(XemSanPhamActivity.this, KhachHangActivity.class);
-                intent.putExtra("fragmentToOpen", "GioHangFragment");
-                startActivity(intent);
+                        }
+                    });
+                    Intent intent = new Intent(XemSanPhamActivity.this, KhachHangActivity.class);
+                    intent.putExtra("fragmentToOpen", "GioHangFragment");
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(XemSanPhamActivity.this,
+                            "Số lượng sản phẩm thêm vào giỏ hàng vượt quá số lượng sản phẩm tồn kho !", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

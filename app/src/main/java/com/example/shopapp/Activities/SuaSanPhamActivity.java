@@ -43,7 +43,7 @@ import java.util.Map;
 public class SuaSanPhamActivity extends AppCompatActivity {
     ImageView imgAnhDaiDien1, imgAnhDaiDien2, imgAnhDaiDien3;
     Button btnChonAnh1, btnChonAnh2, btnChonAnh3;
-    EditText edtTenSP, edtGiaSP, edtMoTaSP;
+    EditText edtTenSP, edtGiaSP, edtMoTaSP, edtSoLuong;
     Spinner spinnerNhaSX;
     Button btnLuu, btnQuayLai;
 
@@ -73,6 +73,8 @@ public class SuaSanPhamActivity extends AppCompatActivity {
         edtTenSP = findViewById(R.id.edtTenSP);
         edtGiaSP = findViewById(R.id.edtGiaSP);
         edtMoTaSP = findViewById(R.id.edtMoTaSP);
+        edtSoLuong = findViewById(R.id.edtSoLuong);
+
         spinnerNhaSX = findViewById(R.id.spinnerNhaSX);
         btnLuu = findViewById(R.id.btnLuu);
         btnQuayLai = findViewById(R.id.btnQuayLai);
@@ -96,6 +98,7 @@ public class SuaSanPhamActivity extends AppCompatActivity {
         edtGiaSP.setText(decimalFormat.format(sp.getGiaSP()));
 
         edtMoTaSP.setText(sp.getMoTaSP());
+        edtSoLuong.setText(sp.getSoLuong() + "");
 
         Glide.with(getBaseContext()).load(sp.getThumbnails().get(0)).into(imgAnhDaiDien1);
         Glide.with(getBaseContext()).load(sp.getThumbnails().get(1)).into(imgAnhDaiDien2);
@@ -197,14 +200,15 @@ public class SuaSanPhamActivity extends AppCompatActivity {
                 String tenSP = edtTenSP.getText().toString().trim();
                 String giaSPText = edtGiaSP.getText().toString().trim();
                 String moTaSP = edtMoTaSP.getText().toString().trim();
+                int soLuong = Integer.parseInt(edtSoLuong.getText().toString().trim());
                 String selectedTenNhaSX = (String) spinnerNhaSX.getSelectedItem();
 
-                if (selectedTenNhaSX != null && tenSP.length() > 0 && moTaSP.length() > 0) {
+                if (selectedTenNhaSX != null && tenSP.length() > 0 && moTaSP.length() > 0 && soLuong > 0) {
                     if (giaSPText.matches("\\d+")) {
                         float giaSP = Float.parseFloat(giaSPText);
 
                         String nhaSanXuatId = nhaSanXuatMap.get(selectedTenNhaSX);
-                        SanPham updatedProduct = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, nhaSanXuatId, selectedTenNhaSX);
+                        SanPham updatedProduct = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, soLuong, nhaSanXuatId, selectedTenNhaSX);
                         if (shouldUploadImages() == true) {
                             updatedProduct(updatedProduct);
                         } else {

@@ -125,7 +125,7 @@
                     android:layout_weight="2"
                     android:ems="10"
                     android:hint="Nhập số điện thoại ..."
-                    android:inputType="text" />
+                    android:inputType="phone" />
             </LinearLayout>
 
             <LinearLayout

@@ -9,16 +9,18 @@ public class SanPham implements Serializable {
     private float giaSP;
     private String moTaSP;
     private ArrayList<String> thumbnails;
+    private int soLuong;
     private String nhaSanXuatId;
     private String tenNhaSX;
     public SanPham (){}
 
-    public SanPham(String id, String tenSP, float giaSP, String moTaSP, ArrayList<String> thumbnails, String nhaSanXuatId, String tenNhaSX) {
+    public SanPham(String id, String tenSP, float giaSP, String moTaSP, ArrayList<String> thumbnails, int soLuong, String nhaSanXuatId, String tenNhaSX) {
         this.id = id;
         this.tenSP = tenSP;
         this.giaSP = giaSP;
         this.moTaSP = moTaSP;
         this.thumbnails = thumbnails;
+        this.soLuong = soLuong;
         this.nhaSanXuatId = nhaSanXuatId;
         this.tenNhaSX = tenNhaSX;
     }
@@ -61,6 +63,14 @@ public class SanPham implements Serializable {
 
     public void setThumbnails(ArrayList<String> thumbnails) {
         this.thumbnails = thumbnails;
+    }
+
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
 
     public String getNhaSanXuatId() {

@@ -131,11 +131,23 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textSize="20sp" />
+        <EditText
+            android:id="@+id/edtSoLuong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:hint="Nhập số lượng"
+            android:inputType="number"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edtMoTaSP"
             android:layout_width="match_parent"
-            android:layout_height="201dp"
+            android:layout_height="120dp"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Nhập mô tả sản phẩm"

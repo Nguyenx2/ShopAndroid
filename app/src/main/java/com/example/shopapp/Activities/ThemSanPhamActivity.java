@@ -42,7 +42,7 @@ import java.util.Map;
 
 public class ThemSanPhamActivity extends AppCompatActivity {
     ImageView imgAnhDaiDien1, imgAnhDaiDien2, imgAnhDaiDien3;
-    EditText edtTenSP, edtGiaSP, edtMoTaSP;
+    EditText edtTenSP, edtGiaSP, edtMoTaSP, edtSoLuong;
     Button btnChonAnh1, btnChonAnh2, btnChonAnh3, btnThemMoi, btnQuayLai;
     Spinner spinnerNhaSX;
     List<String> listTenNhaSX = new ArrayList<>();
@@ -66,6 +66,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         edtTenSP = findViewById(R.id.edtTenSP);
         edtGiaSP = findViewById(R.id.edtGiaSP);
         edtMoTaSP = findViewById(R.id.edtMoTaSP);
+        edtSoLuong = findViewById(R.id.edtSoLuong);
 
         btnChonAnh1 = findViewById(R.id.btnChonAnh1);
         btnChonAnh2 = findViewById(R.id.btnChonAnh2);
@@ -182,16 +183,24 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                 String tenSP = edtTenSP.getText().toString().trim();
                 String giaSPText = edtGiaSP.getText().toString().trim();
                 String moTaSP = edtMoTaSP.getText().toString().trim();
+                String soLuongText = edtSoLuong.getText().toString().trim();
+                int soLuong = 0;
+                if (soLuongText.length() > 0) {
+                    soLuong = Integer.parseInt(soLuongText);
+                } else {
+                    Toast.makeText(ThemSanPhamActivity.this,
+                            "Vui lòng điền số lượng sản phẩm !", Toast.LENGTH_SHORT).show();
+                }
                 String selectedTenNhaSX = (String) spinnerNhaSX.getSelectedItem();
 
-                if (selectedTenNhaSX != null && tenSP.length() > 0 && moTaSP.length() > 0) {
+                if (selectedTenNhaSX != null && tenSP.length() > 0 && moTaSP.length() > 0 && soLuong > 0) {
                     if (giaSPText.matches("\\d+")) {
                         float giaSP = Float.parseFloat(giaSPText);
 
                         if (imageUriList.size() == 3) {
                             String id = sanPhamRef.push().getKey().toString();
                             String nhaSanXuatId = nhaSanXuatMap.get(selectedTenNhaSX);
-                            SanPham sp = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, nhaSanXuatId, selectedTenNhaSX);
+                            SanPham sp = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, soLuong, nhaSanXuatId, selectedTenNhaSX);
 
                             StorageReference anhSanPhamRef = FirebaseUtils.getChildStorageRef("AnhSanPham");
 

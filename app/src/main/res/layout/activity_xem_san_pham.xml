@@ -75,6 +75,13 @@
                     android:textSize="16sp"
                     android:text="Nhà sản xuất"
                     android:layout_margin="5dp"/>
+                <TextView
+                    android:id="@+id/tv_so_luong_sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Số lượng sản phẩm"
+                    android:layout_margin="5dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

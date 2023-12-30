@@ -174,68 +174,83 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         themMoi();
     }
 
-    private void themMoi(){
+    private void themMoi() {
         btnThemMoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
                 String tenSP = edtTenSP.getText().toString().trim();
-                float giaSP = Float.parseFloat(edtGiaSP.getText().toString().trim());
+                String giaSPText = edtGiaSP.getText().toString().trim();
                 String moTaSP = edtMoTaSP.getText().toString().trim();
                 String selectedTenNhaSX = (String) spinnerNhaSX.getSelectedItem();
 
-                if (selectedTenNhaSX != null && tenSP.length() > 0 && giaSP > 0 && moTaSP.length() > 0) {
-                    String id = sanPhamRef.push().getKey().toString();
-                    String nhaSanXuatId = nhaSanXuatMap.get(selectedTenNhaSX);
-                    SanPham sp = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, nhaSanXuatId, selectedTenNhaSX);
+                if (selectedTenNhaSX != null && tenSP.length() > 0 && moTaSP.length() > 0) {
+                    if (giaSPText.matches("\\d+")) {
+                        float giaSP = Float.parseFloat(giaSPText);
 
-                    StorageReference anhSanPhamRef = FirebaseUtils.getChildStorageRef("AnhSanPham");
+                        if (imageUriList.size() == 3) {
+                            String id = sanPhamRef.push().getKey().toString();
+                            String nhaSanXuatId = nhaSanXuatMap.get(selectedTenNhaSX);
+                            SanPham sp = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, nhaSanXuatId, selectedTenNhaSX);
 
-                    for (int i = 0; i < imageUriList.size(); i++) {
-                        Uri imageUri = imageUriList.get(i);
+                            StorageReference anhSanPhamRef = FirebaseUtils.getChildStorageRef("AnhSanPham");
 
-                        String fileName = (i + 1) + ".jpg";
+                            for (int i = 0; i < imageUriList.size(); i++) {
+                                Uri imageUri = imageUriList.get(i);
 
-                        StorageReference imageRef = anhSanPhamRef.child(id).child(fileName);
-
-                        imageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                String fileName = (i + 1) + ".jpg";
+                                StorageReference imageRef = anhSanPhamRef.child(id).child(fileName);
+                                imageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
-                                    public void onSuccess(Uri uri) {
-                                        String imageUrl = uri.toString();
-                                        listThumbnails.add(imageUrl);
-                                        if (listThumbnails.size() == imageUriList.size()) {
-                                            sanPhamRef.child(id).setValue(sp).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(ThemSanPhamActivity.this,
-                                                                "Thêm sản phẩm mới thành công !", Toast.LENGTH_SHORT).show();
-                                                        finish();
-                                                    } else {
-                                                        Toast.makeText(ThemSanPhamActivity.this,
-                                                                "Lỗi khi thêm sản phẩm mới: " + task.getException(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                    progressBar.setVisibility(View.INVISIBLE);
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                String imageUrl = uri.toString();
+                                                listThumbnails.add(imageUrl);
+                                                if (listThumbnails.size() == imageUriList.size()) {
+                                                    sanPhamRef.child(id).setValue(sp).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(ThemSanPhamActivity.this,
+                                                                        "Thêm sản phẩm mới thành công !", Toast.LENGTH_SHORT).show();
+                                                                finish();
+                                                            } else {
+                                                                Toast.makeText(ThemSanPhamActivity.this,
+                                                                        "Lỗi khi thêm sản phẩm mới: " + task.getException(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                        }
+                                                    });
                                                 }
-                                            });
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        System.out.println("Tải ảnh lên bị lỗi: " + e.toString());
-                                        progressBar.setVisibility(View.INVISIBLE);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                System.out.println("Tải ảnh lên bị lỗi: " + e.toString());
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                            }
+                                        });
                                     }
                                 });
                             }
-                        });
+                        } else {
+                            Toast.makeText(ThemSanPhamActivity.this,
+                                    "Vui lòng chọn đủ ảnh để thực hiện thêm mới sản phẩm !", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    } else {
+                        Toast.makeText(ThemSanPhamActivity.this,
+                                "Vui lòng nhập số tiền hợp lệ chỉ bao gồm số !", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
+                } else {
+                    Toast.makeText(ThemSanPhamActivity.this,
+                            "Vui lòng điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
-
             }
-        } );
+        });
     }
-}
+};

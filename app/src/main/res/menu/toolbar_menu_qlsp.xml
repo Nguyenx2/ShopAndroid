@@ -9,9 +9,15 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
     <item
-        android:id="@+id/menuControl"
-        android:title="Menu thao tác"
-        android:icon="@drawable/menu"
-        app:showAsAction="ifRoom"
+        android:id="@+id/themMoi"
+        android:title="Thêm mới"
+        />
+    <item
+        android:id="@+id/sapXepTangDan"
+        android:title="Sắp xếp tăng dần"
+        />
+    <item
+        android:id="@+id/sapXepGiamDan"
+        android:title="Sắp xếp giảm dần"
         />
 </menu>

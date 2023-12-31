@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activities.QuanLySanPhamActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbQuanLySP"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#c92027"
+        app:title="Quản lý sản phẩm"
+        app:titleTextColor="#fff"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="10"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-31dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tbQuanLySP"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:background="#c92027"
-            app:title="Quản lý" />
+        android:weightSum="10">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="Khu vực quản lý sản phẩm"
             android:textColor="#F44336"
@@ -47,4 +45,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

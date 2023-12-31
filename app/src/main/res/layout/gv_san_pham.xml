@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/tvTenSP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text='Tên sản phẩm'

@@ -3,6 +3,7 @@ package com.example.shopapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,9 @@ public class QuenMatKhauActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(QuenMatKhauActivity.this,
                                                 "Vui lòng kiểm tra email của bạn !", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(QuenMatKhauActivity.this, DangKyActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     }
                                 }
                             });

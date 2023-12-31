@@ -101,35 +101,17 @@ public class QuanLySanPhamActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menuControl) {
-            View view = findViewById(R.id.menuControl);
-            showPopup(view);
+        if (id == R.id.themMoi) {
+            Intent intent = new Intent(getBaseContext(), ThemSanPhamActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.sapXepGiamDan) {
+            sapXepGiamDan();
+        } else if (id == R.id.sapXepTangDan) {
+            sapXepTangDan();
         }
         return true;
     }
 
-    private void showPopup(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.menu_popup);
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.themMoi) {
-                    Intent intent = new Intent(getBaseContext(), ThemSanPhamActivity.class);
-                    startActivity(intent);
-                } else if (id == R.id.sapXepGiamDan) {
-                    sapXepGiamDan();
-                } else if (id == R.id.sapXepTangDan) {
-                    sapXepTangDan();
-                }
-                return true;
-            }
-        });
-
-        popupMenu.show();
-    }
 
     private void docDuLieu() {
         sanPhamRef.addValueEventListener(new ValueEventListener() {

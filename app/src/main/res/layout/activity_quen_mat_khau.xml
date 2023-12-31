@@ -8,7 +8,10 @@
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#4C4947"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nhập vào tài khoản email ..."
+            android:inputType="textEmailAddress"
             android:textSize="20sp"/>
         <Button
             android:id="@+id/btn_gui"

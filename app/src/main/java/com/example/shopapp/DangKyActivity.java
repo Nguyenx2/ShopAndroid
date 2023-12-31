@@ -73,50 +73,55 @@ public class DangKyActivity extends AppCompatActivity {
         String confirmPassword = edtConfirmPassword.getText().toString().trim();
         if (email.length() > 0 && password.length() > 0 &&
             hoTen.length() > 0 && sdt.length() > 0 && confirmPassword.length() > 0){
-            if (password.equals(confirmPassword)){
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    if (user != null) {
-                                        User newUser = new User(
-                                                user.getUid(),
-                                                hoTen,
-                                                user.getEmail(),
-                                                sdt,
-                                                "",
-                                                "https://firebasestorage.googleapis.com/v0/b/shopapp-8cf03.appspot.com/o/AnhNguoiDung%2FAnhMacDinh%2Favt.jpg?alt=media&token=6ccfb226-a492-4eea-8260-912bb44046bb",
-                                                "customer"
-                                        );
-                                        userRef.child(user.getUid()).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Intent intent = new Intent(DangKyActivity.this, KhachHangActivity.class);
-                                                    startActivity(intent);
-                                                    finishAffinity();
-                                                } else {
-                                                    Toast.makeText(DangKyActivity.this,
-                                                            "Lỗi khi lưu thông tin người dùng !", Toast.LENGTH_SHORT).show();
+            if (password.length() >= 6){
+                if (password.equals(confirmPassword)){
+                    auth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        if (user != null) {
+                                            User newUser = new User(
+                                                    user.getUid(),
+                                                    hoTen,
+                                                    user.getEmail(),
+                                                    sdt,
+                                                    "",
+                                                    "https://firebasestorage.googleapis.com/v0/b/shopapp-8cf03.appspot.com/o/AnhNguoiDung%2FAnhMacDinh%2Favt.jpg?alt=media&token=6ccfb226-a492-4eea-8260-912bb44046bb",
+                                                    "customer"
+                                            );
+                                            userRef.child(user.getUid()).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Intent intent = new Intent(DangKyActivity.this, KhachHangActivity.class);
+                                                        startActivity(intent);
+                                                        finishAffinity();
+                                                    } else {
+                                                        Toast.makeText(DangKyActivity.this,
+                                                                "Lỗi khi lưu thông tin người dùng !", Toast.LENGTH_SHORT).show();
+                                                    }
                                                 }
-                                            }
-                                        });
-                                    } else {
-                                        Toast.makeText(DangKyActivity.this,
-                                                "Đăng ký thất bại !", Toast.LENGTH_SHORT).show();
-                                    }
+                                            });
+                                        } else {
+                                            Toast.makeText(DangKyActivity.this,
+                                                    "Đăng ký thất bại !", Toast.LENGTH_SHORT).show();
+                                        }
 
-                                } else {
-                                    Toast.makeText(DangKyActivity.this, "Đăng ký thất bại !",
-                                            Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(DangKyActivity.this, "Đăng ký thất bại !",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                } else {
+                    Toast.makeText(this, "Mật khẩu không khớp !", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(this, "Mật khẩu không khớp !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Mật khẩu phải tối thiểu 6 ký tự !", Toast.LENGTH_SHORT).show();
             }
+
         } else {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
         }

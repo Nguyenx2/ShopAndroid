@@ -107,12 +107,10 @@ public class ThongKeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.soLuongBanChay){
+        if (itemId == R.id.soLuongDaBan){
             sanPhamTheoSLDaBan();
-            return true;
         } else if (itemId == R.id.doanhThuCaoNhat) {
             sanPhamTheoDoanhThu();
-            return true;
         }
         return true;
     }
@@ -132,7 +130,9 @@ public class ThongKeActivity extends AppCompatActivity {
         Collections.sort(listSanPham, new Comparator<SanPham>() {
             @Override
             public int compare(SanPham sp1, SanPham sp2) {
-                return Double.compare(sp2.getSoLuongDaBan()*sp2.getGiaSP(), sp1.getSoLuongDaBan()*sp2.getGiaSP());
+                double doanhThu1 = sp1.getSoLuongDaBan() * sp1.getGiaSP();
+                double doanhThu2 = sp2.getSoLuongDaBan() * sp2.getGiaSP();
+                return Double.compare(doanhThu2, doanhThu1);
             }
         });
         sanPhamAdapter = new SanPhamAdapter(ThongKeActivity.this, R.layout.lv_thong_ke_san_pham, listSanPham);

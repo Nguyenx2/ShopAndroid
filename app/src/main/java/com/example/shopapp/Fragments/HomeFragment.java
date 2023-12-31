@@ -112,6 +112,7 @@ public class HomeFragment extends Fragment {
         gvSanPham = view.findViewById(R.id.gv_san_pham);
         vfTrangChu = view.findViewById(R.id.vf_trang_chu);
         tbTrangChu = view.findViewById(R.id.tb_trang_chu);
+
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(tbTrangChu);
 
@@ -172,6 +173,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_menu_qlsp, menu);
+        menu.findItem(R.id.themMoi).setVisible(false);
         MenuItem menuSearch = menu.findItem(R.id.menuSearch);
         SearchView searchView = (SearchView) menuSearch.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -193,33 +195,14 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menuControl){
-            showPopup();
-            return true;
+        if (id == R.id.sapXepGiamDan){
+            sapXepGiamDan();
+        } else if (id == R.id.sapXepTangDan){
+            sapXepTangDan();
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
-    private void showPopup(){
-        View view = requireActivity().findViewById(R.id.menuControl);
-        PopupMenu popupMenu = new PopupMenu(requireActivity(), view);
-        popupMenu.inflate(R.menu.menu_popup);
-        popupMenu.getMenu().findItem(R.id.themMoi).setVisible(false);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.sapXepGiamDan){
-                    sapXepGiamDan();
-                } else if (id == R.id.sapXepTangDan){
-                    sapXepTangDan();
-                }
-                return true;
-            }
-        });
-
-        popupMenu.show();
-    }
     private void sapXepGiamDan() {
         Collections.sort(listSanPham, new Comparator<SanPham>() {
             @Override

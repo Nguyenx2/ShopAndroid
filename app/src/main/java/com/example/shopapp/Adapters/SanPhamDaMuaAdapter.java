@@ -88,6 +88,21 @@ public class SanPhamDaMuaAdapter extends ArrayAdapter {
 
             }
         });
+        DatabaseReference sanPhamRef = FirebaseUtils.getChildRef("SanPham");
+        sanPhamRef.child(item.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    btnDanhGia.setText("Sản phẩm không còn tồn tại trên hệ thống !");
+                    btnDanhGia.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         btnDanhGia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

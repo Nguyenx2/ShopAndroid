@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,6 +100,7 @@ public class GioHangFragment extends Fragment {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ArrayList<GioHangItem> listGioHangItem = new ArrayList<>();
     String noiDungHD = "";
+    ProgressBar progressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -107,6 +109,7 @@ public class GioHangFragment extends Fragment {
         tvThongBao = view.findViewById(R.id.tv_thong_bao);
         tvTongTien = view.findViewById(R.id.tv_tong_tien);
         btnDatHang = view.findViewById(R.id.btn_dat_hang);
+        progressBar = view.findViewById(R.id.progressBar);
 
         lvGioHang = view.findViewById(R.id.lv_gio_hang);
         itemGioHangAdapter = new ItemGioHangAdapter(getActivity(), R.layout.lv_item_gio_hang, gioHangItems);
@@ -158,12 +161,33 @@ public class GioHangFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (gioHangItems.size() > 0){
-                    hienThiXacNhanTT();
+                    kiemTraSoLuongTonKho();
                 } else {
                     Toast.makeText(getActivity().getBaseContext(), "Vui lòng thêm sản phẩm dể đặt hàng !", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+    private void kiemTraSoLuongTonKho(){
+        for (GioHangItem gioHangItem : gioHangItems){
+            sanPhamRef.child(gioHangItem.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    SanPham sanPham = snapshot.getValue(SanPham.class);
+                    if (sanPham != null && gioHangItem.getSoLuong() > sanPham.getSoLuong()){
+                        Toast.makeText(getActivity(),
+                                "Sản phẩm: " + sanPham.getTenSP() + " vượt quá số lượng tồn kho !", Toast.LENGTH_SHORT).show();
+                    } else {
+                        hienThiXacNhanTT();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
     private void hienThiXacNhanTT(){
         // Thong tin hoa don
@@ -205,6 +229,7 @@ public class GioHangFragment extends Fragment {
         builder.setNegativeButton("Xác nhận", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int j) {
+                progressBar.setVisibility(View.VISIBLE);
                 String id = hoaDonRef.push().getKey().toString();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 String thoiGian = sdf.format(new Date());
@@ -221,6 +246,7 @@ public class GioHangFragment extends Fragment {
                             sdt, diaChi, listGioHangItem, tongTien, thoiGian);
                     float tongTienHD = tongTien;
                     gioHangRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        DecimalFormat decimalFormat = new DecimalFormat("#,###");
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             listGioHangItem.clear();
@@ -228,6 +254,44 @@ public class GioHangFragment extends Fragment {
                                 GioHangItem gioHangItem = data.getValue(GioHangItem.class);
                                 listGioHangItem.add(gioHangItem);
                             }
+                            for (int i = 0; i < listGioHangItem.size(); i++){
+                                noiDungHD += "- Tên sản phẩm: " + listGioHangItem.get(i).getTenSP() + " | " +
+                                        "Giá tiền: " + decimalFormat.format(listGioHangItem.get(i).getGiaSP()) + " VNĐ | " +
+                                        "Số lượng: " + listGioHangItem.get(i).getSoLuong() + "\n";
+                            }
+                            String noiDung = "Người nhận hàng: " + hoTen + "\n" +
+                                    "SĐT: " + sdt + "\n" +
+                                    "Địa chỉ nhận hàng: " + diaChi + "\n" +
+                                    noiDungHD + "Tổng tiền thanh toán: " + decimalFormat.format(tongTienHD) + " VNĐ" + "\n" +
+                                    "Cảm ơn bạn đã mua hàng ở ShopApp !";
+
+                            // Gửi Email hóa đơn cho khách hàng
+                            String tieuDe = "Hóa đơn mua hàng tại ShopApp lúc: " + thoiGian;
+                            SendEmailUtils.guiEmail(email, tieuDe, noiDung, new SendEmailUtils.OnEmailSentListener() {
+                                @Override
+                                public void sentSuccess() {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getActivity(),
+                                                    "Gửi hóa đơn thành công !", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void sentError() {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getActivity(),
+                                                    "Lỗi khi gửi hóa đơn !", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                        }
+                                    });
+                                }
+                            });
                             sanPhamRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -239,7 +303,7 @@ public class GioHangFragment extends Fragment {
                                                 int updateSoLuongDaBan = sanPham.getSoLuongDaBan() + gioHangItem.getSoLuong();
                                                 if (updateSoLuong >= 0) {
                                                     sanPham.setSoLuong(updateSoLuong);
-                                                    sanPham.setSoLuong(updateSoLuongDaBan);
+                                                    sanPham.setSoLuongDaBan(updateSoLuongDaBan);
                                                     sanPhamRef.child(sanPham.getId()).setValue(sanPham);
                                                 }
                                             }
@@ -252,41 +316,7 @@ public class GioHangFragment extends Fragment {
 
                                 }
                             });
-                            for (int i = 0; i < listGioHangItem.size(); i++){
-                                noiDungHD += "- Tên sản phẩm: " + listGioHangItem.get(i).getTenSP() + " | " +
-                                        "Giá tiền: " + listGioHangItem.get(i).getGiaSP() + " VNĐ | " +
-                                        "Số lượng: " + listGioHangItem.get(i).getSoLuong() + "\n";
-                            }
-                            String noiDung = "Người nhận hàng: " + hoTen + "\n" +
-                                    "SĐT: " + sdt + "\n" +
-                                    "Địa chỉ nhận hàng: " + diaChi + "\n" +
-                                    noiDungHD + "Tổng tiền: " + tongTienHD + " VNĐ";
 
-                            // Gửi Email hóa đơn cho khách hàng
-                            String tieuDe = "Hóa đơn mua hàng tại ShopApp lúc: " + thoiGian;
-                            SendEmailUtils.guiEmail(email, tieuDe, noiDung, new SendEmailUtils.OnEmailSentListener() {
-                                @Override
-                                public void sentSuccess() {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getActivity(),
-                                                    "Gửi hóa đơn thành công !", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void sentError() {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getActivity(),
-                                                    "Lỗi khi gửi hóa đơn !", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            });
                             // Cập nhật trường hóa đơn
                             hoaDonRef.child(id).setValue(hd).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/soLuongBanChay"
-        android:title="Danh sách sản phẩm có số lượng bán chạy"
+        android:id="@+id/soLuongDaBan"
+        android:title="Sắp xếp theo số lượng đã bán"
         />
     <item
         android:id="@+id/doanhThuCaoNhat"
-        android:title="Danh sách sản phẩm có doanh thu cao"
+        android:title="Sắp xếp theo doanh thu"
         />
 </menu>

@@ -102,6 +102,15 @@ public class QuanLyNSXActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.themNhaSX){
+            Intent intent = new Intent(QuanLyNSXActivity.this, ThemNhaSX.class);
+            startActivity(intent);
+        }
+        return true;
+    }
+
     private void docDuLieu() {
         nhaSanXuatRef.addValueEventListener(new ValueEventListener() {
             @Override

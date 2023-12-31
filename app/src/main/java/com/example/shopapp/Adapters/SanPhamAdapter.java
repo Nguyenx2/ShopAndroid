@@ -61,6 +61,10 @@ public class SanPhamAdapter extends ArrayAdapter {
         return listSanPham.size();
     }
 
+    public ArrayList<SanPham> getListSanPham() {
+        return listSanPham;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

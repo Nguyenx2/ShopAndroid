@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
         gvSanPham.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                SanPham sp = listSanPham.get(i);
+                SanPham sp = sanPhamAdapter.getListSanPham().get(i);
                 Intent intent = new Intent(getActivity(), XemSanPhamActivity.class);
                 intent.putExtra("sp", sp);
                 startActivity(intent);

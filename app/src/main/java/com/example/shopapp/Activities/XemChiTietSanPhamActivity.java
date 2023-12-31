@@ -46,7 +46,11 @@ public class XemChiTietSanPhamActivity extends AppCompatActivity {
 
         if (sp.getThumbnails().size() > 0) {
             Glide.with(getBaseContext()).load(sp.getThumbnails().get(0)).into(img1);
+        }
+        if (sp.getThumbnails().size() > 1) {
             Glide.with(getBaseContext()).load(sp.getThumbnails().get(1)).into(img2);
+        }
+        if (sp.getThumbnails().size() > 2) {
             Glide.with(getBaseContext()).load(sp.getThumbnails().get(2)).into(img3);
         }
 

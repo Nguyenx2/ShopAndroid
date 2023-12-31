@@ -51,7 +51,7 @@ public class SuaSanPhamActivity extends AppCompatActivity {
     Map<String, String> nhaSanXuatMap = new HashMap<>();
     ArrayList<String> listThumbnails = new ArrayList<>();
     ArrayList<Uri> imageUriList = new ArrayList<>(Arrays.asList(null, null, null));
-    String nhaSanXuatId = null;
+    int soLuongDaBan = 0;
     DatabaseReference nhaSanXuatRef = FirebaseUtils.getChildRef("NhaSanXuat");
     DatabaseReference sanPhamRef = FirebaseUtils.getChildRef("SanPham");
     ProgressBar progressBar;
@@ -99,6 +99,8 @@ public class SuaSanPhamActivity extends AppCompatActivity {
 
         edtMoTaSP.setText(sp.getMoTaSP());
         edtSoLuong.setText(sp.getSoLuong() + "");
+
+        soLuongDaBan = sp.getSoLuongDaBan();
 
         Glide.with(getBaseContext()).load(sp.getThumbnails().get(0)).into(imgAnhDaiDien1);
         Glide.with(getBaseContext()).load(sp.getThumbnails().get(1)).into(imgAnhDaiDien2);
@@ -208,7 +210,7 @@ public class SuaSanPhamActivity extends AppCompatActivity {
                         float giaSP = Float.parseFloat(giaSPText);
 
                         String nhaSanXuatId = nhaSanXuatMap.get(selectedTenNhaSX);
-                        SanPham updatedProduct = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, soLuong, nhaSanXuatId, selectedTenNhaSX);
+                        SanPham updatedProduct = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, soLuong, soLuongDaBan, nhaSanXuatId, selectedTenNhaSX);
                         if (shouldUploadImages() == true) {
                             updatedProduct(updatedProduct);
                         } else {

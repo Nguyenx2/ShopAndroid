@@ -236,8 +236,10 @@ public class GioHangFragment extends Fragment {
                                         for (GioHangItem gioHangItem : listGioHangItem){
                                             if (gioHangItem.getId().equals(sanPham.getId())) {
                                                 int updateSoLuong = sanPham.getSoLuong() - gioHangItem.getSoLuong();
+                                                int updateSoLuongDaBan = sanPham.getSoLuongDaBan() + gioHangItem.getSoLuong();
                                                 if (updateSoLuong >= 0) {
                                                     sanPham.setSoLuong(updateSoLuong);
+                                                    sanPham.setSoLuong(updateSoLuongDaBan);
                                                     sanPhamRef.child(sanPham.getId()).setValue(sanPham);
                                                 }
                                             }
@@ -251,7 +253,7 @@ public class GioHangFragment extends Fragment {
                                 }
                             });
                             for (int i = 0; i < listGioHangItem.size(); i++){
-                                noiDungHD += "Tên sản phẩm: " + listGioHangItem.get(i).getTenSP() + " | " +
+                                noiDungHD += "- Tên sản phẩm: " + listGioHangItem.get(i).getTenSP() + " | " +
                                         "Giá tiền: " + listGioHangItem.get(i).getGiaSP() + " VNĐ | " +
                                         "Số lượng: " + listGioHangItem.get(i).getSoLuong() + "\n";
                             }

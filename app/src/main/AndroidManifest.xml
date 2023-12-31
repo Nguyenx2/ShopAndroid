@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ShopApp"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.ThongKeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ChiTietTaiKhoanActivity"
             android:exported="false" />
         <activity

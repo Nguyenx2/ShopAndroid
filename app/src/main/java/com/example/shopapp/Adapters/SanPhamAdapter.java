@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,8 @@ public class SanPhamAdapter extends ArrayAdapter {
         TextView tvTenSP = view.findViewById(R.id.tvTenSP);
         TextView tvGiaSP = view.findViewById(R.id.tvGiaSP);
         TextView tvTenNhaSX = view.findViewById(R.id.tvTenNhaSX);
+        TextView tvSoLuongDaBan = view.findViewById(R.id.tvSoLuongDaBan);
+        LinearLayout layoutControl = view.findViewById(R.id.layout_control);
         Button btnXemChiTiet = view.findViewById(R.id.btnXemChiTiet);
         Button btnSua = view.findViewById(R.id.btnSua);
         Button btnXoa = view.findViewById(R.id.btnXoa);
@@ -80,6 +83,11 @@ public class SanPhamAdapter extends ArrayAdapter {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         tvGiaSP.setText("Giá: " + decimalFormat.format(sp.getGiaSP()) + " VNĐ");
 
+        if (getClass().getSimpleName().equals("ThongKeActivity")) {
+            tvSoLuongDaBan.setVisibility(View.VISIBLE);
+            layoutControl.setVisibility(View.GONE);
+        }
+        tvSoLuongDaBan.setText("Đã bán: " + sp.getSoLuongDaBan());
         if (sp.getThumbnails().size() > 0) {
             Glide.with(context.getBaseContext()).load(sp.getThumbnails().get(0)).into(imgAnhDaiDien);
         }

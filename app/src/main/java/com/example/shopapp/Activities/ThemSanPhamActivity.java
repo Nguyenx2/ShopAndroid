@@ -200,7 +200,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                         if (imageUriList.size() == 3) {
                             String id = sanPhamRef.push().getKey().toString();
                             String nhaSanXuatId = nhaSanXuatMap.get(selectedTenNhaSX);
-                            SanPham sp = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, soLuong, nhaSanXuatId, selectedTenNhaSX);
+                            SanPham sp = new SanPham(id, tenSP, giaSP, moTaSP, listThumbnails, soLuong, 0, nhaSanXuatId, selectedTenNhaSX);
 
                             StorageReference anhSanPhamRef = FirebaseUtils.getChildStorageRef("AnhSanPham");
 

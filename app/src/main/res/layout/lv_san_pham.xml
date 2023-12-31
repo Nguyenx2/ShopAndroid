@@ -55,9 +55,19 @@
                 android:padding="5dp"
                 android:text="TextView"
                 android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvSoLuongDaBan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Số lượng đã bán"
+                android:textSize="14sp"
+                android:textColor="#2196F3"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_control"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

@@ -72,7 +72,9 @@ public class SanPhamAdapter extends ArrayAdapter {
         TextView tvGiaSP = view.findViewById(R.id.tvGiaSP);
         TextView tvTenNhaSX = view.findViewById(R.id.tvTenNhaSX);
         TextView tvSoLuongDaBan = view.findViewById(R.id.tvSoLuongDaBan);
-        LinearLayout layoutControl = view.findViewById(R.id.layout_control);
+        TextView tvDoanhThu = view.findViewById(R.id.tvDoanhThu);
+        TextView tvSoLuongTonKho = view.findViewById(R.id.tvSoLuongTonKho);
+
         Button btnXemChiTiet = view.findViewById(R.id.btnXemChiTiet);
         Button btnSua = view.findViewById(R.id.btnSua);
         Button btnXoa = view.findViewById(R.id.btnXoa);
@@ -83,11 +85,15 @@ public class SanPhamAdapter extends ArrayAdapter {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         tvGiaSP.setText("Giá: " + decimalFormat.format(sp.getGiaSP()) + " VNĐ");
 
-        if (getClass().getSimpleName().equals("ThongKeActivity")) {
-            tvSoLuongDaBan.setVisibility(View.VISIBLE);
-            layoutControl.setVisibility(View.GONE);
+        if (tvSoLuongDaBan != null){
+            tvSoLuongDaBan.setText("Đã bán: " + sp.getSoLuongDaBan());
         }
-        tvSoLuongDaBan.setText("Đã bán: " + sp.getSoLuongDaBan());
+        if (tvSoLuongTonKho != null){
+            tvSoLuongTonKho.setText("Số lượng: " + sp.getSoLuong() + " sản phẩm");
+        }
+        if (tvDoanhThu != null){
+            tvDoanhThu.setText("Tổng doanh thu: " + decimalFormat.format(sp.getSoLuongDaBan()*sp.getGiaSP()) + " VNĐ");
+        }
         if (sp.getThumbnails().size() > 0) {
             Glide.with(context.getBaseContext()).load(sp.getThumbnails().get(0)).into(imgAnhDaiDien);
         }

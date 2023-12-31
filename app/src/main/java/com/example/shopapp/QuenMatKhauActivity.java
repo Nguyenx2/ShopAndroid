@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class QuenMatKhauActivity extends AppCompatActivity {
     EditText edtEmail;
-    Button btnGui;
+    Button btnGui, btnQuayLai;
     ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,15 @@ public class QuenMatKhauActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quen_mat_khau);
         edtEmail = findViewById(R.id.edt_email);
         btnGui = findViewById(R.id.btn_gui);
+        btnQuayLai = findViewById(R.id.btn_quay_lai);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
+        btnQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         btnGui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

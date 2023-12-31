@@ -31,13 +31,27 @@
             android:hint="Nhập vào tài khoản email ..."
             android:inputType="textEmailAddress"
             android:textSize="20sp"/>
-        <Button
-            android:id="@+id/btn_gui"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#4CAF50"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gửi"/>
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_gui"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#4CAF50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gửi"
+                android:layout_margin="5dp"/>
+            <Button
+                android:id="@+id/btn_quay_lai"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#F44336"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quay lại"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>

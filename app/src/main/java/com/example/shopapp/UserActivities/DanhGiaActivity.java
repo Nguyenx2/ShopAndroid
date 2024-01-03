@@ -108,7 +108,7 @@ public class DanhGiaActivity extends AppCompatActivity {
         if (binhLuan.length() > 0 && soSao > 0) {
             DatabaseReference danhGiaRef = FirebaseUtils.getChildRef("DanhGia").child(item.getId())
                     .child((user.getUid()));
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot data : snapshot.getChildren()){
